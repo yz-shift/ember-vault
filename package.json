@@ -1,0 +1,28 @@
+{
+  "name": "ember-vault",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5180 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4180",
+    "test": "node --experimental-strip-types --test tests/core.test.ts tests/feel.test.ts",
+    "test:browser": "node tests/browser.mjs",
+    "test:full": "node --experimental-strip-types tests/full-run.ts LANTERN-01",
+    "test:full:browser": "node tests/full-run-browser.mjs",
+    "test:production": "vite build && node tests/production-smoke.mjs",
+    "artifact": "vite build --config vite.artifact.config.ts && node scripts/build-artifact.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "5.4.21",
+    "playwright": "1.59.1"
+  }
+}
