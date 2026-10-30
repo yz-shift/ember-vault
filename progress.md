@@ -2,6 +2,13 @@
 
 > 进度日志。新的写在最上面；只追加，不删改旧记录。
 
+## 2026-10-30 17:20 · T-001 · 完成
+- 做了：用户确认方案（GitHub Pages，同意公开）；仓库 yz-shift/ember-vault 已改为 Public；方案拆成 T-002 ~ T-008
+- 改了：TASKS.md
+- 验证：`gh repo view` 显示 PUBLIC
+- 问题：无
+- 下一步：T-002 构建清理
+
 ## 2026-10-30 17:00 · T-001 · 进行中
 - 做了：检查了现有构建、部署材料、操作说明和布局；对比了 GitHub Pages 和 itch.io；写好 PLAN.md
 - 改了：PLAN.md（新增）、TASKS.md
