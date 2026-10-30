@@ -2,6 +2,13 @@
 
 > 进度日志。新的写在最上面；只追加，不删改旧记录。
 
+## 2026-10-30 17:00 · T-001 · 进行中
+- 做了：检查了现有构建、部署材料、操作说明和布局；对比了 GitHub Pages 和 itch.io；写好 PLAN.md
+- 改了：PLAN.md（新增）、TASKS.md
+- 验证：`npm run build` 通过，0 报错 0 警告（阈值被调到 1500 kB，Phaser 1478 kB 刚好在线下）
+- 问题：GitHub Pages 免费版要求仓库公开；Firefox/WebKit 测试需要下载浏览器
+- 下一步：等我回复 PLAN.md 第 4 节的 6 个问题，再拆成 T-002 起的任务
+
 ## 2026-10-30 16:10 · 接入工作流 · 完成
 - 做了：加入 AGENTS.md / TASKS.md / CLAUDE.md，本文件改为新格式（新记录在上）
 - 改了：AGENTS.md、TASKS.md、CLAUDE.md（新增）；progress.md（只在顶部加了这段）
