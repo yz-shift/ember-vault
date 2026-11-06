@@ -2,6 +2,13 @@
 
 > 进度日志。新的写在最上面；只追加，不删改旧记录。
 
+## 2026-11-06 23:11 · T-009 · 完成
+- 做了：README 翻译成英文作为 README.md，原中文版改名为 README.zh-CN.md（git mv，内容不变，只在顶部加了英文版链接），两份互相链接。英文版注明游戏内文字是中文；遗物组合、守印、空冠圣殿给了英文名并附中文原名；注明 output/ 证据文件不在仓库里
+- 改了：README.md（新英文版）、README.zh-CN.md（原 README.md 改名）、TASKS.md
+- 验证：脚本对比两份 README 里出现的全部数字，完全一致；链接文件都存在；表格每行列数一致。`npm test` 23 项全过。`npm run test:browser`、`npm run test:production` 没跑：要另开开发/预览服务器，这次只改了文档，不影响游戏代码
+- 问题：英文版没有在 GitHub 上实际渲染看过（还没 push）
+- 下一步：等我决定 push；之后回到 T-002
+
 ## 2026-10-30 17:20 · T-001 · 完成
 - 做了：用户确认方案（GitHub Pages，同意公开）；仓库 yz-shift/ember-vault 已改为 Public；方案拆成 T-002 ~ T-008
 - 改了：TASKS.md

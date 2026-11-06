@@ -1,107 +1,109 @@
-# 余烬深牢 · Ember Vault
+# Ember Vault (余烬深牢)
 
-原创单人俯视角地牢肉鸽。TypeScript + Phaser 3.90 + Vite。角色、像素贴图、地牢装饰、界面和音效均由代码生成，无外部美术下载、付费资源或 API 密钥。
+> 中文版：[README.zh-CN.md](README.zh-CN.md)
 
-## 启动
+An original single-player top-down dungeon roguelike, built with TypeScript, Phaser 3.90 and Vite. Characters, pixel textures, dungeon decorations, the interface and sound effects are all generated in code, with no downloaded art, paid assets or API keys. The in-game text is in Chinese.
 
-需要 Node.js **22.18+**（本次使用 24.14）。在此目录执行：
+## Running it
+
+Requires Node.js **22.18+** (developed with 24.14). In this folder, run:
 
 ```powershell
 npm.cmd install
 npm.cmd run dev
 ```
 
-打开 **http://127.0.0.1:5180/**。macOS / Linux 将 `npm.cmd` 换成 `npm`。
+Open **http://127.0.0.1:5180/**. On macOS or Linux, use `npm` instead of `npm.cmd`.
 
 ```powershell
 npm.cmd run build
 npm.cmd run preview
 ```
 
-生产预览地址为 http://127.0.0.1:4180/，构建文件在 `dist/`。所有资源均从本站加载；安装依赖后运行不需要网络。独立项目，不依赖上一级竞技场项目的业务代码。
+The production preview runs at http://127.0.0.1:4180/, and the build output goes to `dist/`. All assets are served from the same site, so once dependencies are installed it runs without a network connection. It is a standalone project and does not depend on code from any other project.
 
-## 操作与目标
+## Controls and goal
 
-| 按键 | 操作 |
+| Key | Action |
 | --- | --- |
-| WASD | 八向移动，斜向速度归一化；约 0.07 秒加到全速，松手约 0.06 秒停住 |
-| ↑ ↓ ← → | 四向射击，按住即持续开火 |
-| 鼠标左键 | 可选瞄准模式：WASD 移动 + 鼠标瞄准 + 按住左键射击 |
-| Space | 沿移动方向冲刺；静止时沿射击方向冲刺，短暂无敌 |
-| E | 靠近商店商品后购买，价格显示在商品下方 |
-| Esc | 暂停 / 继续；失去焦点也会自动暂停 |
-| F | 切换全屏 |
-| M | 开关合成音效 |
+| WASD | Move in eight directions, with diagonal speed normalised; reaches full speed in about 0.07 s and stops about 0.06 s after release |
+| ↑ ↓ ← → | Shoot in four directions; hold to keep firing |
+| Left mouse button | Optional aiming mode: move with WASD, aim with the mouse, hold the left button to shoot |
+| Space | Dash in the movement direction, or in the shooting direction when standing still; brief invincibility |
+| E | Buy a shop item when standing next to it; the price is shown below the item |
+| Esc | Pause / resume; the game also pauses when the window loses focus |
+| F | Toggle fullscreen |
+| M | Toggle synthesised sound effects |
 
-顶栏的 **✛ / ⌖** 按钮在「方向键瞄准」和「鼠标瞄准」之间切换，选择记在 `localStorage`。移动、角色朝向与射击方向彼此独立：开火和转向都不打断移动，射击方向可以在移动中随时改变。玩家受伤半径（7.5）小于碰撞半径（10），贴边擦过算躲开。
+The **✛ / ⌖** button in the top bar switches between arrow-key aiming and mouse aiming, and the choice is saved in `localStorage`. Movement, facing and shooting direction are independent: firing and turning never interrupt movement, and the shooting direction can change at any time while moving. The player's hurt radius (7.5) is smaller than the collision radius (10), so a shot that only grazes the edge counts as a dodge.
 
-走向开启的房门即可切换房间；免费掉落靠近自动拾取，金币会被吸附。战斗房有 2–4 波守卫（越深越多），全部击败后开放房门并发放一次金币、补给或遗物奖励；**前两次清房必定掉落一件改变攻击方式的遗物**。获得 **3 枚守印** 后，可进入最远端的空冠圣殿。Boss 第二阶段开始时会清除敌方旧弹幕，并提高攻击频率。
+Walk into an open door to move to the next room. Free drops are picked up automatically when you get close, and coins are pulled towards you. Combat rooms have 2–4 waves of guards (more in deeper rooms). Defeating them all opens the doors and grants a one-time reward of coins, supplies or a relic, and **the first two room clears always drop a relic that changes how you attack**. With **3 Seals (守印)** you can enter the Hollow Crown Sanctum (空冠圣殿) in the farthest room. When the boss enters its second phase, it clears its old bullets and attacks more often.
 
-## 已实现
+## Features
 
-- 10–15 个房间的随机连通地图：安全出生房、战斗房、两个宝箱房、商店、最远端叶节点 Boss 房；所有门双向连通，石柱不封闭通道。
-- 保存本局内每个房间的探索、清理、奖励与商品状态；切房清理弹幕、敌人和视觉对象；重开创建全新的本局状态。
-- 五类敌人：**成群的脆弱小怪**（基础泪弹一发即杀）搭配追击扑击、远程扇射、定向冲撞、环形弹幕。所有攻击都有预警；刷怪本身也有预警——敌人先以标记出现、期间不可被伤害也不造成伤害，且从不出现在玩家身边。
-- 深处房间只增加**数量**，不增加单体血量；精英只改变行为与攻击模式，血量与普通同类一致。
-- 两阶段 Boss：留缺口环射、瞄准扇射、预警冲撞；半血后更快、更密集；胜利、失败后均可立即同种子重开或换新种子。
-- 16 种叠加遗物：伤害、射速、移速、穿透、散射、弹射、分裂、连锁、爆炸、吸血、冰霜、追踪、护盾、生命上限、金币吸附、冲刺冷却。分裂 / 连锁 / 爆炸都有各自的画面表现，不只是数值。
-- 六组组合：**横扫雨幕**（散射 + 穿透）、**碎镜暴雨**（弹射 + 分裂）、**雷鸣织网**（射速 + 连锁）、**万花回廊**（散射 + 弹射）、**霜裂长枪**（穿透 + 冰霜）、**血烬引擎**（吸血 + 爆炸）。分裂只有一代、连锁与爆炸按发子弹分配预算，密度再高也不会无限触发。
-- 小地图、生命、金币、守印、计时、当前属性、遗物数量/说明、组合提示和完整图鉴。道具较多时右侧面板单独滚动。
-- 程序像素角色、石砖、灯火、石柱、商人、开合宝箱。**泪滴状投射物**：圆头朝向飞行方向、尾部收窄，伤害越高越大。命中闪白 + 击退 + 短促碎裂粒子；连锁闪电、爆炸与冰霜冲击都有绘制。普通命中不震屏，击杀与爆炸才震，且有冷却，割草时不会持续抖动。
+- Random connected maps of 10–15 rooms: a safe spawn room, combat rooms, two treasure rooms, a shop, and a boss room at the farthest leaf node. Every door connects both ways, and pillars never block a path.
+- Each room's exploration, clear, reward and shop state is kept for the whole run. Changing rooms clears bullets, enemies and visual objects, and restarting creates a fresh run state.
+- Five enemy types: **swarms of fragile small enemies** (one basic tear shot kills them) mixed with chasers that pounce, ranged fan shooters, directional chargers and ring-bullet casters. Every attack is telegraphed, and so is every spawn: enemies first appear as a marker, cannot take or deal damage while marked, and never spawn next to the player.
+- Deeper rooms only add **more enemies**, never more health per enemy. Elites only change behaviour and attack patterns, and have the same health as normal enemies of their type.
+- A two-phase boss with gapped ring shots, aimed fan shots and telegraphed charges; below half health it attacks faster and denser. After a win or a loss, you can restart straight away with the same seed or a new one.
+- 16 stackable relics: damage, fire rate, move speed, pierce, spread, bounce, split, chain, explosion, lifesteal, frost, homing, shield, max health, coin magnet and dash cooldown. Split, chain and explosion each have their own visuals, not just stat changes.
+- Six combos: **Sweeping Rain (横扫雨幕)** (spread + pierce), **Shattered Mirror Storm (碎镜暴雨)** (bounce + split), **Thunder Web (雷鸣织网)** (fire rate + chain), **Kaleidoscope Gallery (万花回廊)** (spread + bounce), **Frostsplit Lance (霜裂长枪)** (pierce + frost) and **Blood Ember Engine (血烬引擎)** (lifesteal + explosion). Split only goes one generation, and chain and explosion have a budget per fired bullet, so however dense the build gets they never trigger without limit.
+- A minimap, health, coins, Seals, a timer, current stats, relic count and descriptions, combo hints and a full compendium. When you hold many items, the right-hand panel scrolls on its own.
+- Procedural pixel characters, stone bricks, lamps, pillars, a merchant and opening chests. **Teardrop-shaped projectiles**: the round head faces the direction of travel and the tail narrows, and higher damage makes them bigger. Hits flash white, knock enemies back and burst into short shard particles; chain lightning, explosions and frost impacts are all drawn. Normal hits do not shake the screen; only kills and explosions do, with a cooldown, so the screen does not keep shaking while you mow down crowds.
 
-## 种子与模块
+## Seeds and modules
 
-开始界面可输入最多 40 字符的种子，`⟳` 可随机生成；默认种子为 `LANTERN-01`。相同种子重复生成同一地图；相同探索顺序与输入还会重现道具结果和战斗。奖励 RNG 与视觉随机数相互独立，截图和绘制不会影响掉落。
+The start screen accepts a seed of up to 40 characters, and `⟳` generates a random one; the default seed is `LANTERN-01`. The same seed always generates the same map, and the same exploration order and inputs also reproduce item results and combat. The reward RNG is separate from visual randomness, so screenshots and drawing never affect drops.
 
 ```text
-src/game/tuning.ts   全部手感与成长数值：移动加减速、射速弹速、敌人血量、
-                     波次规模、道具上限、反馈冷却。调手感只改这一个文件。
-src/game/random.ts   可复现的随机数
-src/game/map.ts      连通地图和房间布局
-src/game/items.ts    16 种遗物、叠加属性与六组组合
-src/game/enemies.ts  敌人状态机、绕障与 Boss 攻击
-src/game/combat.ts   弹道、碰撞、伤害、分裂 / 连锁 / 爆炸
-src/game/physics.ts  分步移动与最短方向脱离碰撞
-src/game/game.ts     本局状态、波次、奖励、购买、切房、重开
-src/render/art.ts   程序生成像素贴图和地牢背景
-src/render/scene.ts Phaser 场景、键盘 / 鼠标输入、绘制和反馈
-src/render/audio.ts Web Audio 合成音效
-src/ui/hud.ts       页面 HUD、地图、菜单和图鉴
+src/game/tuning.ts   Every feel and progression number: acceleration, fire rate and bullet speed,
+                     enemy health, wave size, item caps, feedback cooldowns. Tuning only touches this file.
+src/game/random.ts   Reproducible random numbers
+src/game/map.ts      Connected map and room layout
+src/game/items.ts    16 relics, stacked stats and six combos
+src/game/enemies.ts  Enemy state machines, obstacle avoidance and boss attacks
+src/game/combat.ts   Projectiles, collision, damage, split / chain / explosion
+src/game/physics.ts  Stepped movement and shortest-direction collision resolution
+src/game/game.ts     Run state, waves, rewards, purchases, room changes, restarts
+src/render/art.ts   Procedural pixel textures and dungeon backgrounds
+src/render/scene.ts Phaser scene, keyboard / mouse input, drawing and feedback
+src/render/audio.ts Web Audio synthesised sound effects
+src/ui/hud.ts       Page HUD, map, menus and compendium
 ```
 
-Phaser 贴图使用其 [Canvas Texture / Texture API](https://docs.phaser.io/phaser/concepts/textures)，渲染使用一个 Phaser canvas，页面 HUD 独立更新。
+Textures use Phaser's [Canvas Texture / Texture API](https://docs.phaser.io/phaser/concepts/textures). Rendering uses a single Phaser canvas, and the page HUD updates separately.
 
-## 验证
+## Testing
 
 ```powershell
 npm.cmd test
-# 下列浏览器测试需要另一个终端中正在运行 npm.cmd run dev
-# 如本机尚无 Playwright 浏览器，先运行 npx playwright install chromium
+# The browser tests below need npm.cmd run dev running in another terminal
+# If this machine has no Playwright browser yet, first run npx playwright install chromium
 npm.cmd run test:browser
 npm.cmd run test:full
 npm.cmd run test:full:browser
-# 生产冒烟需要另一个终端中正在运行 npm.cmd run preview
+# The production smoke test needs npm.cmd run preview running in another terminal
 npm.cmd run test:production
 ```
 
-若机器上已有 Chromium 而不想让 Playwright 再下一份，设 `CHROMIUM_PATH` 指向该可执行文件即可；未设置时行为与之前完全一致。
+If Chromium is already installed and you do not want Playwright to download another copy, set `CHROMIUM_PATH` to its executable. When it is not set, nothing changes.
 
-- **核心测试（`tests/core.test.ts`，11 项）**：1000 个种子的地图尺寸、连通性、双向门与最远 Boss；移动/冲刺碰撞、五类敌人预警、波次清理、一次奖励、商店事务、遗物叠加与全部组合、穿透/弹射/吸血、两阶段 Boss、暂停、受击无敌和重开状态。
-- **手感测试（`tests/feel.test.ts`，12 项）**：加速在 0.09 秒内到全速、松手立即停住且无漂移；斜向速度在**加速过程中**也保持归一化（不只是全速时）；按住射击键按设定射速持续开火、松手不攒枪；射击不以任何方式影响移动；子弹继承移速但偏离瞄准 < 0.13 弧度；贴墙滑行且受阻轴不蓄速；刷怪必有预警、远离玩家、预警期间双向无伤；小怪一发即死且深度不加血；成长后同样时间伤害输出 > 2.5 倍；高密度构筑不越子弹与分裂预算；**转角不卡死**；密集弹幕中被击杀不会让 tick 崩溃。
-- **浏览器交互（`tests/browser.mjs`，23 项）**：实际点击开始；键盘移动、四向射击、冲刺、Esc 暂停；**按住射击键边斜向移动边持续开火**；**鼠标瞄准模式朝光标开火、松开即停**；走门切房和拾取；刷怪预警与刷怪距离；真实子弹命中后开门；清房往返不重复奖励；E 购买；组合、图鉴、Boss 阶段；**高密度构筑的子弹预算与吞吐**；子弹触发胜利与死亡，再点击重开；桌面尺寸无页面溢出。商店、组合、Boss、死亡等边界场景用开发环境专用 fixture 定位初始状态，再通过实际游戏碰撞/输入完成断言。
-- **完整正常通关**：在浏览器用普通 `Input` 控制器跑默认种子，不修改生命、伤害、敌人或房间状态。结果：探索 **13/13 房间**，清理 **8 间战斗房**，击败 **266 个敌人（含 Boss）**，**250.2 秒**获胜，满血 8/8。折合 **1.06 击杀 / 秒**。
-- **12 个种子的模拟批量样本**（同一控制器，纯模拟无渲染）：12/12 通关，用时 118–250 秒，击杀率 0.95–1.92 / 秒，无任何一局出现超过 120 秒没有击杀的停滞。
-- 已实际检查截图，浏览器无 console error 或 page error。验证尺寸：1024×768、1280×720、1440×900、1920×1080。
-- 生产构建另经实时浏览器检查：真实时钟下移动、射击、暂停/继续正常；即使 URL 含 `?debug=1` 也不暴露开发测试入口。证据：`output/production/report.json`。
-- `output/browser/` 保存交互截图及报告；`output/full-browser/report.json` 保存完整通关证据。
+- **Core tests (`tests/core.test.ts`, 11 tests)**: map size, connectivity, two-way doors and the farthest boss room across 1000 seeds; movement and dash collision, telegraphs for all five enemy types, wave clearing, one-time rewards, shop transactions, relic stacking and every combo, pierce / bounce / lifesteal, the two-phase boss, pausing, invincibility after a hit, and restart state.
+- **Feel tests (`tests/feel.test.ts`, 12 tests)**: reaches full speed within 0.09 s, and stops immediately on release with no drift; diagonal speed stays normalised **while accelerating**, not just at full speed; holding a fire key keeps firing at the set rate, and releasing it does not bank shots; shooting never affects movement in any way; bullets inherit movement speed but stray from the aim by < 0.13 rad; sliding along walls without building up speed on the blocked axis; every spawn is telegraphed, away from the player, and harmless both ways during the telegraph; small enemies die in one shot and gain no health with depth; after upgrades, damage output over the same time is > 2.5×; dense builds stay within the bullet and split budgets; **no getting stuck on corners**; being killed in a dense barrage does not crash the tick.
+- **Browser interaction (`tests/browser.mjs`, 23 tests)**: actually clicking Start; keyboard movement, four-way shooting, dash and Esc pause; **firing continuously while holding a fire key and moving diagonally**; **mouse aiming fires towards the cursor and stops on release**; walking through doors and picking things up; spawn telegraphs and spawn distance; real bullet hits opening the doors; leaving a cleared room and coming back without a repeat reward; buying with E; combos, the compendium and boss phases; **bullet budget and throughput for dense builds**; bullets causing a win and a death, then clicking to restart; no page overflow at desktop sizes. Edge cases such as the shop, combos, the boss and death use a development-only fixture to set up the starting state, then make their assertions through real in-game collisions and input.
+- **A full normal run**: in the browser, the regular `Input` controller plays the default seed without changing health, damage, enemies or room state. Result: **13/13 rooms** explored, **8 combat rooms** cleared, **266 enemies (including the boss)** defeated, and the run won in **250.2 s** at full health (8/8). That is **1.06 kills/s**.
+- **A simulated batch of 12 seeds** (same controller, simulation only, no rendering): 12/12 runs won in 118–250 s at 0.95–1.92 kills/s, and no run went more than 120 s without a kill.
+- Screenshots were checked by eye, with no console errors or page errors in the browser. Sizes checked: 1024×768, 1280×720, 1440×900, 1920×1080.
+- The production build was also checked live in a browser: with a real clock, movement, shooting and pause/resume work, and the development test hooks stay hidden even when the URL contains `?debug=1`. Evidence: `output/production/report.json`.
+- `output/browser/` holds the interaction screenshots and report, and `output/full-browser/report.json` holds the evidence for the full run. The `output/` folder is generated by the tests and is not committed.
 
-`window.render_game_to_text()` 返回可读状态；`window.advanceTime(ms)` 切入确定性手动步进，刷新页面恢复实时运行。只有 Vite 开发模式且 URL 带 `?debug=1` 时才暴露 fixture 入口；生产构建不暴露该入口。
+`window.render_game_to_text()` returns a readable state, and `window.advanceTime(ms)` switches to deterministic manual stepping; reloading the page returns to real time. The fixture hooks are only exposed in Vite development mode with `?debug=1` in the URL, never in production builds.
 
-## 当前限制
+## Current limitations
 
-- 当前为单层地牢、单人玩法，无存档续局、触屏或手柄支持。鼠标瞄准是可选模式，不是触屏方案。
-- **单局时长比手感重做之前明显缩短**：控制器通关从 464.5 秒降到 250.2 秒，同时击杀数从 78 升到 266（击杀率 0.17 → 1.06 每秒）。这是"清怪更快"的直接结果，不是内容变少。若想把单局拉回 5–10 分钟，改 `src/game/game.ts` 里 `r.waves` 的分档、或 `TUNING.waves` 的规模系数即可，不要回头去加敌人血量。
-- 上面所有时长与击杀率都来自**自动控制器**，不是人类玩家；真人会因探索、读遗物、犹豫和死亡而更慢。难度平衡未做人工评测。
-- 手感数值（加减速时长、射速、弹速、继承比例、震屏冷却）已按代码实测断言，但"是否好玩"没有真人试玩数据。
-- 合成音效通路已经浏览器验证，但未做真人听感测评；画面与输入验证以 Chromium 为主。
-- 容器内 headless 软件渲染的 rAF 只有约 30fps，因此生产冒烟测试改为**等待实时推进**而非按墙钟时间推算；这不构成对 60fps 的验证。
+- A single dungeon floor, single player only, with no mid-run saving and no touch or gamepad support. Mouse aiming is an optional mode, not a touch solution.
+- **Runs are much shorter than before the feel rework**: the controller's winning run dropped from 464.5 s to 250.2 s, while kills rose from 78 to 266 (kill rate 0.17 → 1.06 per second). This comes directly from clearing enemies faster, not from less content. To bring runs back to 5–10 minutes, change the tiers of `r.waves` in `src/game/game.ts` or the scale factor in `TUNING.waves`; do not go back to adding enemy health.
+- All run times and kill rates above come from the **automated controller**, not human players. Real players will be slower because they explore, read relics, hesitate and die. Difficulty balance has not been tested by people.
+- The feel numbers (acceleration and deceleration times, fire rate, bullet speed, inherited speed ratio, screen-shake cooldown) are asserted against the running code, but there is no human playtest data on whether the game is fun.
+- The synthesised sound path has been verified in a browser but not judged by human listeners, and visual and input checks were done mainly in Chromium.
+- Headless software rendering in a container only runs rAF at about 30 fps, so the production smoke test **waits for real-time progress** instead of assuming progress from wall-clock time. This does not verify 60 fps.
